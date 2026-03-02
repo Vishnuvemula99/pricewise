@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Products ────────────────────────────────────────────────
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  category    String
+  imageUrl    String?
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  prices      PriceRecord[]
+  alerts      PriceAlert[]
+  searches    SearchLog[]
+
+  @@index([category])
+  @@index([name])
+}
+
+// ─── Price Records (historical snapshots) ────────────────────
+model PriceRecord {
+  id        String   @id @default(cuid())
+  productId String
+  retailer  String   // "bestbuy", "walmart", "amazon", "ebay", "google_shopping"
+  price     Float
+  currency  String   @default("USD")
+  url       String?  // direct link to product on retailer
+  inStock   Boolean  @default(true)
+  fetchedAt DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, retailer])
+  @@index([fetchedAt])
+  @@index([retailer])
+}
+
+// ─── Price Alerts ────────────────────────────────────────────
+model PriceAlert {
+  id          String   @id @default(cuid())
+  productId   String
+  targetPrice Float
+  isActive    Boolean  @default(true)
+  triggeredAt DateTime?
+  createdAt   DateTime @default(now())
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([isActive])
+}
+
+// ─── User Budget Profile ─────────────────────────────────────
+model BudgetProfile {
+  id                  String   @id @default(cuid())
+  monthlyIncome       Float    // after-tax monthly income
+  monthlySavingsRate  Float    @default(0.2) // % of income available for discretionary spending
+  currency            String   @default("USD")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+// ─── Search Logs (for trending / popular products) ───────────
+model SearchLog {
+  id        String   @id @default(cuid())
+  query     String
+  productId String?
+  createdAt DateTime @default(now())
+
+  product   Product? @relation(fields: [productId], references: [id])
+
+  @@index([query])
+  @@index([createdAt])
+}
+
+// ─── Seasonal Pricing Knowledge Base ─────────────────────────
+model SeasonalTrend {
+  id             String @id @default(cuid())
+  category       String // "electronics", "headphones", "laptops", etc.
+  event          String // "Black Friday", "Prime Day", "Back to School"
+  typicalMonth   Int    // 1-12
+  avgDiscountPct Float  // average discount percentage
+  confidence     Float  @default(0.7) // how confident we are in this data
+  source         String @default("manual") // "manual", "computed", "ai_inferred"
+  notes          String?
+
+  @@unique([category, event])
+  @@index([category])
+}

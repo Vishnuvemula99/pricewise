@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #0a0a0f;
+    --foreground: #f0f0f5;
+    --card: #12121a;
+    --card-border: #1e1e2e;
+    --muted: #71717a;
+    --accent-green: #22c55e;
+    --accent-red: #ef4444;
+    --accent-blue: #3b82f6;
+    --accent-yellow: #eab308;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-[#1e1e2e] bg-[#12121a] p-6;
+  }
+
+  .btn-primary {
+    @apply rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-all hover:bg-blue-500 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply rounded-lg border border-[#2e2e3e] bg-transparent px-6 py-3 font-medium text-gray-300 transition-all hover:bg-[#1e1e2e];
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-[#2e2e3e] bg-[#0a0a0f] px-4 py-3 text-white placeholder-gray-500 outline-none transition-colors focus:border-blue-500;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent;
+  }
+
+  .price-tag {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold;
+  }
+
+  .price-low {
+    @apply price-tag bg-green-500/10 text-green-400;
+  }
+
+  .price-high {
+    @apply price-tag bg-red-500/10 text-red-400;
+  }
+
+  .price-mid {
+    @apply price-tag bg-yellow-500/10 text-yellow-400;
+  }
+}

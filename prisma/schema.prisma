@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("NEON_URL")
+  directUrl = env("NEON_URL")
 }
 
 // ─── Products ────────────────────────────────────────────────

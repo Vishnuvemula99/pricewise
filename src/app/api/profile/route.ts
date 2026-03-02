@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/app/lib/db/prisma";
 import { ApiResponse } from "@/app/types";
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 interface UserProfile {
   id: string;
   monthlyIncome: number;

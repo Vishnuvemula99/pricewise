@@ -5,6 +5,20 @@ export const metadata: Metadata = {
   title: "PriceWise — Smart Purchase Advisor",
   description:
     "Compare prices across retailers, track trends, and get AI-powered buy/wait recommendations based on your budget.",
+  icons: {
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
+  },
+  openGraph: {
+    title: "PriceWise — Smart Purchase Advisor",
+    description: "Compare prices, track trends, and get AI-powered buy/wait recommendations",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "PriceWise — Smart Purchase Advisor",
+    description: "Compare prices, track trends, and get AI-powered buy/wait recommendations",
+  },
 };
 
 export default function RootLayout({
